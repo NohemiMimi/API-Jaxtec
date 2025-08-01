@@ -567,3 +567,35 @@ def obtener_historial(correo1, correo2):
     except Exception as e:
         print("Error al obtener historial:", e)
         return []
+
+def obtener_mantenimiento_historial_usuario(correo):
+    try:
+        coleccion = Colabskey.dbconn["mantenimiento"]
+        mantenimientos = list(coleccion.find({"correo": correo}))
+        for m in mantenimientos:
+            m["_id"] = str(m["_id"])  # Convertir ObjectId a string
+        return mantenimientos
+    except Exception as e:
+        print("Error en obtener_mantenimiento_historial_usuario:", e)
+        return []
+
+def obtener_notificaciones_compras(correo):
+    try:
+        pagos = Colabskey.dbconn["pago-exitoso"]
+        datos = list(pagos.find({"correo": correo}))
+
+        notificaciones = []
+        for pedido in datos:
+            notificaciones.append({
+                "tipo": "compra",
+                "titulo": "¡Compra exitosa!",
+                "descripcion": f"Tu compra por ${pedido.get('total', 0)} fue realizada con éxito.",
+                "fecha": pedido.get("fecha", "")  # Si tienes un campo de fecha
+            })
+
+        return notificaciones
+
+    except Exception as e:
+        print("Error en obtener_notificaciones_compras:", e)
+        return []
+

@@ -377,9 +377,7 @@ def guardar_pago_exitoso_endpoint():
 
     except Exception as e:
         print("Error en guardar_pago_exitoso:", e)
-        return jsonify({"mensaje": "Error interno del servidor"}), 500
-    
-
+        return jsonify({"mensaje": "Error interno del servidor"}), 500    
 
 @app.route("/interesados", methods=["GET"])
 @cross_origin(allow_headers=["Content-Type"])
@@ -522,6 +520,35 @@ def historial_mensajes():
     correo2 = data.get("correo2")
     historial = CallMethod.obtener_historial(correo1, correo2)
     return jsonify(historial)
+
+@app.route("/historial/mantenimientos/<correo>", methods=["GET"])
+@cross_origin(allow_headers=["Content-Type"])
+def obtener_mantenimiento_historial(correo):
+    try:
+        resultado = CallMethod.obtener_mantenimiento_historial_usuario(correo)
+        return jsonify({"mantenimientos": resultado}), 200
+    except Exception as e:
+        print("Error al obtener mantenimientos:", e)
+        return jsonify({"mensaje": "Error al obtener mantenimientos"}), 500
+
+@app.route("/notificaciones/compras", methods=["POST"])
+@cross_origin(allow_headers=["Content-Type"])
+def notificaciones_compras():
+    try:
+        data = request.json
+        correo = data.get("correo")
+
+        if not correo:
+            return jsonify({"mensaje": "Correo requerido"}), 400
+
+        resultado = CallMethod.obtener_notificaciones_compras(correo)
+        return jsonify({"notificaciones": resultado}), 200
+
+    except Exception as e:
+        print("Error al obtener notificaciones de compras:", e)
+        return jsonify({"mensaje": "Error interno del servidor"}), 500
+
+
 
 if __name__ == '__main__':
     socketio.run(app, host="0.0.0.0", port=5000, debug=True)
