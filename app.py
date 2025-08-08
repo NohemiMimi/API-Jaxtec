@@ -2,12 +2,10 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS, cross_origin
 from BackEnd import functions as CallMethod
 import BackEnd.GlobalInfo.responseMessages as ResponseMessages
-from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-socketio = SocketIO(app, cors_allowed_origins="*")
 
 @app.route("/login", methods=["POST"])
 @cross_origin(allow_headers=["Content-Type"])
@@ -494,42 +492,7 @@ def obtener_pedidos_usuario():
         return jsonify({"mensaje": "Error al obtener pedidos"}), 500
 
 
-@app.route("/enviar_mensaje", methods=["POST"])
-def enviar_mensaje():
-    data = request.json
-    de = data.get("de")
-    para = data.get("para")
-    mensaje = data.get("mensaje")
 
-    resultado = CallMethod.guardar_mensaje(de, para, mensaje)
-
-    if resultado.get("mensaje") == "Mensaje guardado correctamente":
-        # Emitimos a todos los conectados (o podrías usar rooms si deseas)
-        socketio.emit("nuevo_mensaje", {
-            "de": de,
-            "para": para,
-            "mensaje": mensaje
-        })
-
-    return jsonify(resultado)
-
-@app.route("/historial_mensajes", methods=["POST"])
-def historial_mensajes():
-    data = request.json
-    correo1 = data.get("correo1")
-    correo2 = data.get("correo2")
-    historial = CallMethod.obtener_historial(correo1, correo2)
-    return jsonify(historial)
-
-@app.route("/historial/mantenimientos/<correo>", methods=["GET"])
-@cross_origin(allow_headers=["Content-Type"])
-def obtener_mantenimiento_historial(correo):
-    try:
-        resultado = CallMethod.obtener_mantenimiento_historial_usuario(correo)
-        return jsonify({"mantenimientos": resultado}), 200
-    except Exception as e:
-        print("Error al obtener mantenimientos:", e)
-        return jsonify({"mensaje": "Error al obtener mantenimientos"}), 500
 
 @app.route("/notificaciones/compras", methods=["POST"])
 @cross_origin(allow_headers=["Content-Type"])
@@ -550,5 +513,7 @@ def notificaciones_compras():
 
 
 
+
+
 if __name__ == '__main__':
-    socketio.run(app, host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)

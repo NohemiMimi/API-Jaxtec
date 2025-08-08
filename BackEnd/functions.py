@@ -523,50 +523,6 @@ def obtener_pedidos_por_correo(correo):
         print("Error en DB (pedidos por correo):", e)
         return []
 
-def generar_conversacion_id(correo1, correo2):
-    return "|".join(sorted([correo1, correo2]))
-
-def guardar_mensaje(de_email, para_email, mensaje):
-    try:
-        mensajes = Colabskey.dbconn["mensajes"]
-        conversacion_id = generar_conversacion_id(de_email, para_email)
-
-        nuevo_mensaje = {
-            "de": de_email,
-            "para": para_email,
-            "mensaje": mensaje,
-            "timestamp": datetime.utcnow(),
-            "conversacionId": conversacion_id
-        }
-
-        mensajes.insert_one(nuevo_mensaje)
-        return {"mensaje": "Mensaje guardado correctamente"}
-    except Exception as e:
-        print("Error al guardar mensaje:", e)
-        return {"mensaje": "Error al guardar mensaje"}
-
-def obtener_historial(correo1, correo2):
-    try:
-        mensajes = Colabskey.dbconn["mensajes"]
-        historial = list(mensajes.find({
-            "$or": [
-                {"de": correo1, "para": correo2},
-                {"de": correo2, "para": correo1}
-            ]
-        }).sort("timestamp", 1))  # Orden cronológico
-
-        return [
-            {
-                "de": m["de"],
-                "para": m["para"],
-                "mensaje": m["mensaje"],
-                "timestamp": m["timestamp"]
-            }
-            for m in historial
-        ]
-    except Exception as e:
-        print("Error al obtener historial:", e)
-        return []
 
 def obtener_mantenimiento_historial_usuario(correo):
     try:
