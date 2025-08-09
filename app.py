@@ -3,6 +3,7 @@ from flask_cors import CORS, cross_origin
 from BackEnd import functions as CallMethod
 import BackEnd.GlobalInfo.responseMessages as ResponseMessages
 
+
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -13,12 +14,12 @@ def login_usuario():
     try:
         data = request.json
         correo = data.get("correo")
-        contraseña = data.get("contraseña")
+        contrasena = data.get("contraseña")
 
-        if not correo or not contraseña:
+        if not correo or not contrasena:
             return jsonify({"mensaje": "Correo y contraseña son obligatorios"}), 400
 
-        resultado = CallMethod.verificar_usuario(correo, contraseña)
+        resultado = CallMethod.verificar_usuario(correo, contrasena)
 
         if resultado.get("success"):
             return jsonify({
@@ -39,12 +40,12 @@ def registrar_usuario():
     try:
         data = request.json
         correo = data.get("correo")
-        contraseña = data.get("contraseña")
+        contrasena = data.get("contraseña")
 
-        if not correo or not contraseña:
+        if not correo or not contrasena:
             return jsonify({"mensaje": "Correo y contraseña son obligatorios"}), 400
 
-        resultado = CallMethod.registrar_usuario(correo, contraseña)
+        resultado = CallMethod.registrar_usuario(correo, contrasena)
         return jsonify(resultado), 201
     except Exception as e:
         print("Error en registro:", e)
