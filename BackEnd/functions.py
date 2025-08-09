@@ -27,18 +27,16 @@ def verificar_usuario(correo, contraseña):
         print("Error al verificar usuario:", e)
         return {"success": False}
 
-def registrar_usuario(correo, contrasena):
+def registrar_usuario(correo, contraseña):
     try:
         usuarios = Colabskey.dbconn["usuarios"]
 
-        # Verificar si el usuario ya existe
         if usuarios.find_one({"correo": correo}):
             return {"mensaje": "El usuario ya está registrado"}
 
-        # Crear nuevo usuario
         nuevo_usuario = {
             "correo": correo,
-            "contrasena": contrasena  # <-- ahora sin ñ
+            "contraseña": contraseña
         }
 
         usuarios.insert_one(nuevo_usuario)
@@ -46,7 +44,6 @@ def registrar_usuario(correo, contrasena):
     except Exception as e:
         print("Error en DB:", e)
         return {"mensaje": "No se pudo registrar el usuario"}
-
 
 def guardar_contacto(nombre, telefono, mensaje):
     try:
@@ -525,6 +522,7 @@ def obtener_pedidos_por_correo(correo):
     except Exception as e:
         print("Error en DB (pedidos por correo):", e)
         return []
+
 
 
 def obtener_mantenimiento_historial_usuario(correo):
