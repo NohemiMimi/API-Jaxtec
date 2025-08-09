@@ -40,7 +40,7 @@ def registrar_usuario():
     try:
         data = request.json
         correo = data.get("correo")
-        contraseña = data.get("contraseña")
+        contraseña = data.get("contrasena")
 
         if not correo or not contraseña:
             return jsonify({"mensaje": "Correo y contraseña son obligatorios"}), 400
