@@ -11,10 +11,10 @@ if Colabskey.dbconn is None:
     mongoConnect = MongoClient(Colabskey.strConnection)
     Colabskey.dbconn = mongoConnect[Colabskey.strDBConnection]
 
-def verificar_usuario(correo, contrasena):
+def verificar_usuario(correo, contraseña):
     try:
         usuarios = Colabskey.dbconn["usuarios"]
-        usuario = usuarios.find_one({"correo": correo, "contraseña": contrasena})
+        usuario = usuarios.find_one({"correo": correo, "contraseña": contraseña})
 
         if usuario:
             return {
@@ -27,7 +27,7 @@ def verificar_usuario(correo, contrasena):
         print("Error al verificar usuario:", e)
         return {"success": False}
 
-def registrar_usuario(correo, contrasena):
+def registrar_usuario(correo, contraseña):
     try:
         usuarios = Colabskey.dbconn["usuarios"]
 
@@ -36,7 +36,7 @@ def registrar_usuario(correo, contrasena):
 
         nuevo_usuario = {
             "correo": correo,
-            "contraseña": contrasena
+            "contraseña": contraseña
         }
 
         usuarios.insert_one(nuevo_usuario)

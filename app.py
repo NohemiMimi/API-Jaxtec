@@ -14,12 +14,12 @@ def login_usuario():
     try:
         data = request.json
         correo = data.get("correo")
-        contrasena = data.get("contraseña")
+        contraseña = data.get("contraseña")
 
-        if not correo or not contrasena:
+        if not correo or not contraseña:
             return jsonify({"mensaje": "Correo y contraseña son obligatorios"}), 400
 
-        resultado = CallMethod.verificar_usuario(correo, contrasena)
+        resultado = CallMethod.verificar_usuario(correo, contraseña)
 
         if resultado.get("success"):
             return jsonify({
@@ -40,12 +40,12 @@ def registrar_usuario():
     try:
         data = request.json
         correo = data.get("correo")
-        contrasena = data.get("contraseña")
+        contraseña = data.get("contraseña")
 
-        if not correo or not contrasena:
+        if not correo or not contraseña:
             return jsonify({"mensaje": "Correo y contraseña son obligatorios"}), 400
 
-        resultado = CallMethod.registrar_usuario(correo, contrasena)
+        resultado = CallMethod.registrar_usuario(correo, contraseña)
         return jsonify(resultado), 201
     except Exception as e:
         print("Error en registro:", e)
