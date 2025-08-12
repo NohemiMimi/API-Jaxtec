@@ -492,24 +492,28 @@ def obtener_pedidos_usuario():
         return jsonify({"mensaje": "Error al obtener pedidos"}), 500
 
 
-
-
-@app.route("/notificaciones/compras", methods=["POST"])
+@app.route("/MantGet/<correo>", methods=["GET"])
 @cross_origin(allow_headers=["Content-Type"])
-def notificaciones_compras():
+def obtener_mantenimientos_usuario(correo):
     try:
-        data = request.json
-        correo = data.get("correo")
-
-        if not correo:
-            return jsonify({"mensaje": "Correo requerido"}), 400
-
-        resultado = CallMethod.obtener_notificaciones_compras(correo)
-        return jsonify({"notificaciones": resultado}), 200
-
+        resultado = CallMethod.obtener_mantenimientos_usuario(correo)
+        return jsonify({"mantenimientos": resultado}), 200
     except Exception as e:
-        print("Error al obtener notificaciones de compras:", e)
-        return jsonify({"mensaje": "Error interno del servidor"}), 500
+        print("Error al obtener mantenimientos por usuario:", e)
+        return jsonify({"mensaje": "Error al obtener mantenimientos"}), 500
+
+@app.route("/ServGet/<correo>", methods=["GET"])
+@cross_origin(allow_headers=["Content-Type"])
+def obtener_servicios_usuario(correo):
+    try:
+        resultado = CallMethod.obtener_servicios_usuario(correo)
+        return jsonify({"servicios": resultado}), 200
+    except Exception as e:
+        print("Error al obtener servicios por usuario:", e)
+        return jsonify({"mensaje": "Error al obtener servicios"}), 500
+
+
+
 
 
 

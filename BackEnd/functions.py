@@ -536,25 +536,24 @@ def obtener_mantenimiento_historial_usuario(correo):
         print("Error en obtener_mantenimiento_historial_usuario:", e)
         return []
 
-def obtener_notificaciones_compras(correo):
+def obtener_mantenimientos_usuario(correo):
     try:
-        pagos = Colabskey.dbconn["pago-exitoso"]
-        datos = list(pagos.find({"correo": correo}))
-
-        notificaciones = []
-        for pedido in datos:
-            notificaciones.append({
-                "tipo": "compra",
-                "titulo": "¡Compra exitosa!",
-                "descripcion": f"Tu compra por ${pedido.get('total', 0)} fue realizada con éxito.",
-                "fecha": pedido.get("fecha", "")  # Si tienes un campo de fecha
-            })
-
-        return notificaciones
-
+        mantenimiento = Colabskey.dbconn["mantenimiento"]
+        datos = list(mantenimiento.find({"correo": correo}, {"_id": 0}))
+        return datos
     except Exception as e:
-        print("Error en obtener_notificaciones_compras:", e)
+        print("Error en DB (get mantenimientos usuario):", e)
         return []
+
+def obtener_servicios_usuario(correo):
+    try:
+        servicio = Colabskey.dbconn["servicio"]
+        datos = list(servicio.find({"correo": correo}, {"_id": 0}))
+        return datos
+    except Exception as e:
+        print("Error en DB (get servicios usuario):", e)
+        return []
+
 
 
 
