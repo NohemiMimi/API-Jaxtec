@@ -163,6 +163,7 @@ def guardar_mantenimiento(data):
     
 def guardar_servicio_correctivo(data):
     try:
+        correo = data.get("correo")  # <--- Aquí recibes correo
         marca = data.get("marca")
         modelo = data.get("modelo")
         placa = data.get("placa")
@@ -175,6 +176,7 @@ def guardar_servicio_correctivo(data):
             return {"success": False, "mensaje": "Faltan campos obligatorios"}
 
         servicio = {
+            "correo": correo,  # <--- Guardas correo en la DB
             "marca": marca,
             "modelo": modelo,
             "placa": placa,
