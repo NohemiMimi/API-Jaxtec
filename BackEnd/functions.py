@@ -556,3 +556,15 @@ def obtener_notificaciones_compras(correo):
         print("Error en obtener_notificaciones_compras:", e)
         return []
 
+def obtener_mantenimientos_por_usuario(correo):
+    try:
+        coleccion = Colabskey.dbconn["mantenimiento"]
+        mantenimientos = list(coleccion.find({"correo": correo}, {"_id": 0}))
+        return mantenimientos
+    except Exception as e:
+        print("Error en obtener_mantenimientos_por_usuario:", e)
+        return []
+
+
+
+

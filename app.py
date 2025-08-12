@@ -512,7 +512,15 @@ def notificaciones_compras():
         return jsonify({"mensaje": "Error interno del servidor"}), 500
 
 
-
+@app.route("/historial/mantenimientos/<correo>", methods=["GET"])
+@cross_origin(allow_headers=["Content-Type"])
+def obtener_historial_mantenimientos(correo):
+    try:
+        resultado = CallMethod.obtener_mantenimientos_por_usuario(correo)
+        return jsonify({"mantenimientos": resultado}), 200
+    except Exception as e:
+        print("Error al obtener historial de mantenimientos:", e)
+        return jsonify({"mensaje": "Error interno del servidor"}), 500
 
 
 if __name__ == '__main__':
