@@ -496,6 +496,7 @@ def obtener_pedidos_usuario():
 @cross_origin(allow_headers=["Content-Type"])
 def obtener_mantenimientos_usuario(correo):
     try:
+        correo = correo.lower()
         resultado = CallMethod.obtener_mantenimientos_usuario(correo)
         return jsonify({"mantenimientos": resultado}), 200
     except Exception as e:
@@ -506,6 +507,7 @@ def obtener_mantenimientos_usuario(correo):
 @cross_origin(allow_headers=["Content-Type"])
 def obtener_servicios_usuario(correo):
     try:
+        correo = correo.lower()
         resultado = CallMethod.obtener_servicios_usuario(correo)
         return jsonify({"servicios": resultado}), 200
     except Exception as e:
