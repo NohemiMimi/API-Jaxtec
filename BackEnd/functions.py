@@ -549,7 +549,7 @@ def obtener_mantenimientos_usuario(correo):
 
 def obtener_servicios_usuario(correo):
     try:
-        servicio = Colabskey.dbconn["servicio"]
+        servicio = Colabskey.dbconn["servicio-correctivo"]
         datos = list(servicio.find({"correo": correo}, {"_id": 0}))
         return datos
     except Exception as e:
